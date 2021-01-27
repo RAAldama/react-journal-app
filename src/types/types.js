@@ -4,4 +4,7 @@ export const types = {
 
     uiSetError: '[Ui] SetError',
     uiRemoveError: '[Ui] RemoveError',
+
+    uiStartLoading: '[UI] Start loading',
+    uiFinishLoading: '[UI] Finish loading'
 }
