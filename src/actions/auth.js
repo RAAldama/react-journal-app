@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 import { types } from "../types/types";
 import { firebase, googleAuthProvider } from '../firebase/firebase-config';
 import { uiFinishLoading, uiStartLoading } from "./ui";
@@ -15,6 +17,8 @@ export const startLoginEmailPassword = (email, password) => {
             e => {
                 console.log(e);
                 dispatch( uiFinishLoading() );
+
+                Swal.fire('Error al iniciar sesión Dx', e.message, 'error');
             }
         )
     }
@@ -29,7 +33,11 @@ export const startRegisterEmailPassword = (email, password, username) => {
                 dispatch( login(user.uid, user.displayName) );
             }
         ).catch(
-            e => console.log(e)
+            e => {
+                console.log(e);
+                
+                Swal.fire('Error al iniciar sesión Dx', e.message, 'error');
+            }
         )
     }
 }
@@ -51,5 +59,19 @@ export const login = (uid, displayName) => {
             uid,
             displayName
         }
+    }
+}
+
+export const startLogOut = () => {
+    return async( dispatch ) => {
+        await firebase.auth().signOut();
+
+        dispatch( logout() );
+    }
+}
+
+export const logout = () => {
+    return {
+        type: types.logout
     }
 }
