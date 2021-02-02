@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { JournalScreen } from '../components/journal/JournalScreen'
 import { AuthRouter } from './AuthRouter'
 import { login } from '../actions/auth';
+import { startLoginNotes } from '../actions/notes';
 
 export const AppRouter = () => {
     const dispatch = useDispatch();
@@ -15,10 +16,13 @@ export const AppRouter = () => {
 
     useEffect(() => {
 
-        firebase.auth().onAuthStateChanged( user => {
+        firebase.auth().onAuthStateChanged( async user => {
             if(user?.uid){
                 dispatch( login(user.uid, user.displayName) );
                 setIsLogged(true);    
+
+                dispatch( startLoginNotes(user.uid) );
+
             }else{
                 setIsLogged(false);
             }
