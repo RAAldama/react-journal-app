@@ -7,7 +7,7 @@ export const loadNotes = async (uid) => {
     notesSnap.forEach(snapshot => {
         notes.push({
             id: snapshot.id,
-            body: snapshot.data()
+            ...snapshot.data()
         })
     })
 
