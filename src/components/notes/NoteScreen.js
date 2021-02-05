@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { activeNote } from '../../actions/notes';
+import { activeNote, startDelete } from '../../actions/notes';
 import { useForm } from '../../hooks/useForm';
 import { NotesAppBar } from './NotesAppBar'
 
@@ -10,9 +10,13 @@ export const NoteScreen = () => {
     //El doble punto es para renombrar la variable sacada del selector
     const { active:note } = useSelector(state => state.notes);
     const [formValues, handleInputChange, reset] = useForm(note);
-    const {title, body} = formValues;
+    const {title, body, id} = formValues;
     const activeId = useRef( note.id );
     const dispatch = useDispatch();
+
+    const handleDelete = () => {
+        dispatch( startDelete(id) );
+    }
 
     useEffect(() => {
 
@@ -55,10 +59,15 @@ export const NoteScreen = () => {
                 {
                     note.url && 
                     <div className="notes__image">
-                        <img src="https://images7.alphacoders.com/109/1098539.png" alt="note-img" />
+                        <img src={note.url} alt="note-img" />
                     </div>
                 }
             </div>
+
+            <button className="btn btn-danger" onClick={handleDelete}>
+                Borrar Nota
+            </button>
+
         </div>
     )
 }

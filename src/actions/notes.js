@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { db } from "../firebase/firebase-config";
+import { fileUpload } from "../helpers/fileUpload";
 import { loadNotes } from "../helpers/loadNotes";
 import { types } from "../types/types";
 
@@ -15,6 +16,7 @@ export const startNewNote = () => {
 
         const doc = await db.collection(`${uid}/journal/notes`).add( newNote );
         dispatch( activeNote(doc.id, newNote) );
+        dispatch( addNewNote(doc.id, newNote) );
 
     }
 }
@@ -22,6 +24,13 @@ export const startNewNote = () => {
 export const activeNote = (id, note) => {
     return {
         type: types.notesActive,
+        payload: {id, ...note}
+    }
+}
+
+export const addNewNote = (id, note) => {
+    return {
+        type: types.notesAddNew,
         payload: {id, ...note}
     }
 }
@@ -67,5 +76,53 @@ export const refreshNote = (id, note) => {
     return {
         type: types.notesUpdated,
         payload: { id, note }
+    }
+}
+
+export const startUpload = (file) => {
+    return async(dispatch, getSate) => {
+
+        const { active:activeNote } = getSate().notes;
+        
+        Swal.fire({
+            title: 'Subiendo imágen',
+            text: 'Espere, elegido no muerto',
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const fileUrl = await fileUpload( file );
+        activeNote.url = fileUrl;
+        
+        dispatch( startSaveNote(activeNote) );
+
+        Swal.close();
+
+    }
+}
+
+export const startDelete = (id) => {
+    return async(dispatch, getSate) => {
+
+        const uid = getSate().auth.uid;
+        await db.doc(`${uid}/journal/notes/${id}`).delete();
+
+        dispatch( deleteNote(id) );
+
+    }
+}
+
+export const deleteNote = (id) => {
+    return {
+        type: types.notesDelete,
+        payload: id,
+    }
+}
+
+export const notesLogout = () => {
+    return {
+        type: types.notesLogOutClean,
     }
 }

@@ -30,6 +30,16 @@
     }
 }
 
+.btn-danger{
+    background-color: crimson;
+
+    transition: background-color .3s ease;
+
+    &:hover{
+        background-color: darken($color: crimson, $amount: 10);
+    }
+}
+
 .btn-block{
     width: 100%;
 }
