@@ -3,13 +3,15 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAg-gt0xFJtKI2uve9We55743hJQau2CRk",
-    authDomain: "react-app-journal-4aa4a.firebaseapp.com",
-    projectId: "react-app-journal-4aa4a",
-    storageBucket: "react-app-journal-4aa4a.appspot.com",
-    messagingSenderId: "703243419480",
-    appId: "1:703243419480:web:c112c03b448c2702d6af2d"
+    apiKey: process.env.REACT_APP_APIKEY,
+    authDomain: process.env.REACT_APP_AUTHDOMAIN,
+    projectId: process.env.REACT_APP_PROJECTID,
+    storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+    appId: process.env.REACT_APP_APPID
 };
+
+/*
 
 const firebaseConfigTesting = {
     apiKey: "AIzaSyCjoPTXghgfP6fGqLoYR57Jfh20NCosc9A",
@@ -29,7 +31,11 @@ if(process.env.NODE_ENV === 'test'){
     firebase.initializeApp(firebaseConfig);
 }
 
+*/
+
 // Initialize Firebase
+
+firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
